@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ليلة صلاة الثانوي</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the chosen fonts and subtle background animation */
+        body {
+            font-family: 'Almarai', sans-serif; /* Default font */
+            background-color: #F5F5DC; /* Light beige for background */
+            overflow: hidden; /* Hide overflow for subtle background animation */
+        }
+        .font-cairo {
+            font-family: 'Cairo', sans-serif;
+        }
+        .bg-sky-gradient {
+            background: linear-gradient(135deg, #ADD8E6 0%, #87CEEB 100%); /* Light sky blue gradient */
+        }
+        .text-gold {
+            color: #DAA520; /* Subtle gold accent */
+        }
+        .countdown-digit {
+            font-size: 3rem; /* Large digits for mobile */
+            line-height: 1;
+            font-weight: 700;
+        }
+        .countdown-label {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #4A5568; /* Darker gray for labels */
+        }
+
+        /* Subtle background animation */
+        @keyframes pulse-light {
+            0% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+            100% { opacity: 0.4; transform: scale(1); }
+        }
+
+        .animated-background-light {
+            animation: pulse-light 8s infinite ease-in-out;
+        }
+
+        /* Saint Mina SVG - simple and lightweight */
+        .saint-mina-icon {
+            width: 80px; /* Adjust size as needed */
+            height: 80px;
+            fill: #DAA520; /* Gold color for the icon */
+            opacity: 0.7;
+        }
+
+        /* Hide elements initially for smooth entry */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s forwards;
+        }
+
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Subtle animated background element -->
+    <div class="absolute inset-0 bg-sky-gradient opacity-70 animated-background-light"></div>
+
+    <!-- Main Invitation Page Content -->
+    <div id="main-page" class="relative z-10 bg-white p-6 md:p-8 rounded-xl shadow-lg text-center max-w-sm w-full border border-gray-200">
+        <!-- Saint Mina Icon (simple SVG) -->
+        <div class="flex justify-center mb-4">
+            <svg class="saint-mina-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8zm0 2a6 6 0 100 12 6 6 0 000-12zm0 2a4 4 0 110 8 4 4 0 010-8zm0 2a2 2 100 4 2 2 0 000-4zM11 10h2v4h-2zm0 5h2v2h-2z"/>
+                <!-- This is a generic cross/halo shape, not a specific detailed icon of St. Mina to keep it light -->
+                <!-- For a more specific St. Mina, a custom path would be needed, but this ensures lightweight -->
+                <path d="M12 7.5l-1.5 3.5-3.5 1.5 3.5 1.5 1.5 3.5 1.5-3.5 3.5-1.5-3.5-1.5z" fill="#DAA520"/>
+            </svg>
+        </div>
+
+        <h1 class="text-2xl md:text-3xl font-bold mb-2 text-gray-800 fade-in-element" style="animation-delay: 0.2s;">
+            ليلة صلاة الثانوي
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-4 fade-in-element" style="animation-delay: 0.4s;">
+            دعوة لكل شباب وبنات ثانوي
+        </p>
+
+        <!-- New: Bible Verse at the top -->
+        <div class="text-center mb-4 fade-in-element" style="animation-delay: 0.5s;">
+            <p class="text-base md:text-lg text-gray-700 font-cairo mb-1">
+                "فَتَدْعُونَنِي وَتَذْهَبُونَ وَتُصَلُّونَ إِلَيَّ فَأَسْمَعُ لَكُمْ."
+            </p>
+            <p class="text-sm text-gray-500 font-cairo">(إِرْمِيَا ٢٩:‏١٢)</p>
+        </div>
+
+        <div class="text-gray-700 mb-6 fade-in-element" style="animation-delay: 0.6s;">
+            <p class="mb-1">
+                <span class="font-bold text-gold">الميعاد:</span> الجمعة الجاية 18 يوليو
+            </p>
+            <p class="mb-1">
+                <span class="font-bold text-gold">من:</span> ٦:٣٠ مساءً <span class="font-bold text-gold">إلى:</span> ٨:٠٠ مساءً
+            </p>
+            <p>
+                <span class="font-bold text-gold">المكان:</span> الكنيسة الصغيرة اللي فوق كنيسة السمائيين
+            </p>
+        </div>
+
+        <!-- Countdown Section -->
+        <div id="countdown-section" class="mb-6 fade-in-element" style="animation-delay: 0.8s;">
+            <p class="text-gray-700 text-lg mb-3">فاضل قد إيه على ليلة الصلاة؟</p>
+            <div class="flex justify-center items-center space-x-4">
+                <div class="flex flex-col items-center">
+                    <span id="days" class="countdown-digit text-sky-700">00</span>
+                    <span class="countdown-label">يوم</span>
+                </div>
+                <div class="text-sky-700 countdown-digit">:</div>
+                <div class="flex flex-col items-center">
+                    <span id="hours" class="countdown-digit text-sky-700">00</span>
+                    <span class="countdown-label">ساعة</span>
+                </div>
+                <div class="text-sky-700 countdown-digit">:</div>
+                <div class="flex flex-col items-center">
+                    <span id="minutes" class="countdown-digit text-sky-700">00</span>
+                    <span class="countdown-label">دقيقة</span>
+                </div>
+                <div class="text-sky-700 countdown-digit">:</div>
+                <div class="flex flex-col items-center">
+                    <span id="seconds" class="countdown-digit text-sky-700">00</span>
+                    <span class="countdown-label">ثانية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message after countdown ends -->
+        <div id="message-section" class="hidden text-center fade-in-element" style="animation-delay: 0.2s;">
+            <p class="text-2xl md:text-3xl font-bold text-gold mb-4">
+                يا بخت اللي صلى ❤️❤️❤️
+            </p>
+            <p class="text-lg md:text-xl text-gray-700 mb-4 font-cairo">
+                "مِنَ ٱلضِّيقِ دَعَوْتُ ٱلرَّبَّ فَأَجَابَنِي مِنَ ٱلرُّحْبِ."
+            </p>
+            <p class="text-sm text-gray-500 font-cairo">(اَلْمَزَامِيرُ ١١٨:‏٥)</p>
+        </div>
+
+        <!-- RSVP Status Indicator -->
+        <div id="rsvp-status" class="mt-4 hidden bg-green-100 text-green-800 py-2 px-4 rounded-lg text-lg font-bold">
+            أنت جاي! 🎉
+        </div>
+
+        <!-- New: RSVP Button -->
+        <button id="rsvp-button" class="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+            أنا جاي؟ (صوت هنا)
+        </button>
+
+        <!-- Share Button -->
+        <button id="share-button" class="mt-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">
+            شارك الإعلان مع أصحابك
+        </button>
+    </div>
+
+    <!-- Vote Page Content (Initially Hidden) -->
+    <div id="vote-page" class="relative z-10 bg-white p-6 md:p-8 rounded-xl shadow-lg text-center max-w-sm w-full border border-gray-200 hidden">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
+            هتيجي ليلة الصلاة؟
+        </h2>
+        <div class="flex flex-col space-y-4">
+            <!-- Reordered buttons -->
+            <button data-vote="coming" class="vote-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                جي
+            </button>
+            <button data-vote="definitely_coming" class="vote-button bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                جي أكيد
+            </button>
+            <button data-vote="not_coming" class="vote-button bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                مش جي
+            </button>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Messages -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p id="modal-message" class="text-xl font-bold text-gray-800 mb-4"></p>
+            <button id="modal-close-button" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-full">تمام</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables (provided by Canvas environment)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app;
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false;
+
+        // Initialize Firebase and Authenticate
+        async function initializeFirebase() {
+            try {
+                if (Object.keys(firebaseConfig).length > 0) {
+                    app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            console.log("Firebase Authenticated. User ID:", userId);
+                            isAuthReady = true;
+                            await loadRsvpStatus(); // Load RSVP status after auth is ready
+                        } else {
+                            console.log("No user signed in. Attempting anonymous sign-in.");
+                            try {
+                                if (initialAuthToken) {
+                                    await signInWithCustomToken(auth, initialAuthToken);
+                                } else {
+                                    await signInAnonymously(auth);
+                                }
+                            } catch (error) {
+                                console.error("Firebase Auth Error:", error);
+                            }
+                        }
+                    });
+                } else {
+                    console.warn("Firebase config not found. Firestore functionality will be limited.");
+                    isAuthReady = true; // Mark as ready even without Firebase for basic functionality
+                }
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                isAuthReady = true; // Mark as ready even if init fails
+            }
+        }
+
+        // Firestore functions
+        async function saveRsvpStatus(status) {
+            if (!isAuthReady || !userId || !db) {
+                console.error("Firebase not ready or user not authenticated to save RSVP.");
+                showCustomModal("حدث خطأ: لا يمكن حفظ التصويت حالياً. حاول مرة أخرى.");
+                return;
+            }
+            try {
+                const rsvpDocRef = doc(db, `artifacts/${appId}/users/${userId}/prayer_night_rsvp`, 'my_rsvp');
+                await setDoc(rsvpDocRef, {
+                    status: status,
+                    timestamp: new Date().toISOString()
+                });
+                console.log("RSVP status saved:", status);
+                return true;
+            } catch (e) {
+                console.error("Error saving RSVP status:", e);
+                showCustomModal("حدث خطأ أثناء حفظ التصويت.");
+                return false;
+            }
+        }
+
+        async function loadRsvpStatus() {
+            if (!isAuthReady || !userId || !db) {
+                console.warn("Firebase not ready or user not authenticated to load RSVP.");
+                return null;
+            }
+            try {
+                const rsvpDocRef = doc(db, `artifacts/${appId}/users/${userId}/prayer_night_rsvp`, 'my_rsvp');
+                const docSnap = await getDoc(rsvpDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("RSVP status loaded:", data.status);
+                    if (data.status === 'coming' || data.status === 'definitely_coming') {
+                        document.getElementById('rsvp-status').classList.remove('hidden');
+                    } else {
+                        document.getElementById('rsvp-status').classList.add('hidden');
+                    }
+                    return data.status;
+                } else {
+                    console.log("No RSVP status found for this user.");
+                    document.getElementById('rsvp-status').classList.add('hidden');
+                    return null;
+                }
+            } catch (e) {
+                console.error("Error loading RSVP status:", e);
+                return null;
+            }
+        }
+
+        // UI Element References
+        const targetDate = new Date('2025-07-18T18:30:00+03:00').getTime(); // 6:30 PM EEST
+        const daysSpan = document.getElementById('days');
+        const hoursSpan = document.getElementById('hours');
+        const minutesSpan = document.getElementById('minutes');
+        const secondsSpan = document.getElementById('seconds');
+        const countdownSection = document.getElementById('countdown-section');
+        const messageSection = document.getElementById('message-section');
+        const mainPage = document.getElementById('main-page');
+        const votePage = document.getElementById('vote-page');
+        const rsvpButton = document.getElementById('rsvp-button');
+        const shareButton = document.getElementById('share-button');
+        const voteButtons = document.querySelectorAll('.vote-button');
+        const customModal = document.getElementById('custom-modal');
+        const modalMessage = document.getElementById('modal-message');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        // Countdown Logic
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (daysSpan) daysSpan.textContent = String(days).padStart(2, '0');
+            if (hoursSpan) hoursSpan.textContent = String(hours).padStart(2, '0');
+            if (minutesSpan) minutesSpan.textContent = String(minutes).padStart(2, '0');
+            if (secondsSpan) secondsSpan.textContent = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                if (countdownSection) countdownSection.classList.add('hidden');
+                if (messageSection) messageSection.classList.remove('hidden');
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // Custom Modal Functions
+        function showCustomModal(message) {
+            modalMessage.textContent = message;
+            customModal.classList.add('show');
+        }
+
+        function hideCustomModal() {
+            customModal.classList.remove('show');
+        }
+
+        modalCloseButton.addEventListener('click', hideCustomModal);
+
+        // Page Navigation
+        function showPage(pageId) {
+            mainPage.classList.add('hidden');
+            votePage.classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // Event Listeners
+        rsvpButton.addEventListener('click', () => {
+            showPage('vote-page');
+        });
+
+        voteButtons.forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const vote = event.target.dataset.vote;
+                const saved = await saveRsvpStatus(vote);
+                if (saved) {
+                    if (vote === 'coming' || vote === 'definitely_coming') {
+                        showCustomModal("مستنينك في الصلاة يا كبير"); // Updated message
+                        setTimeout(() => {
+                            hideCustomModal();
+                            showPage('main-page');
+                            loadRsvpStatus(); // Refresh status on main page
+                        }, 2000); // Show message for 2 seconds
+                    } else {
+                        // For 'not_coming', no message is displayed to the user
+                        // <!-- k3ro_OS -->
+                        setTimeout(() => {
+                            hideCustomModal();
+                            showPage('main-page');
+                            loadRsvpStatus(); // Refresh status on main page
+                        }, 500); // Shorter delay for no message
+                    }
+                }
+            });
+        });
+
+        shareButton.addEventListener('click', () => {
+            const shareText = "مستنيينك في ليلة صلاة الثانوي يوم الجمعة 18 يوليو، 6:30 مساءً في الكنيسة الصغيرة اللي فوق كنيسة السمائيين! متفوتش الفرصة دي ❤️ #ليلة_صلاة #شباب_ثانوي";
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ليلة صلاة الثانوي',
+                    text: shareText,
+                    url: shareUrl,
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                const el = document.createElement('textarea');
+                el.value = shareText + '\n' + shareUrl;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showCustomModal('تم نسخ تفاصيل الإعلان! تقدر تبعتها لأصحابك دلوقتي.');
+            }
+        });
+
+        // Initialize Firebase and load RSVP status on page load
+        initializeFirebase();
+    </script>
+</body>
+</html>
