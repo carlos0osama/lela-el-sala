@@ -15,13 +15,36 @@
         body {
             font-family: 'Almarai', sans-serif; /* Default font */
             background-color: #F5F5DC; /* Light beige for background */
-            overflow: hidden; /* Hide overflow for subtle background animation */
+            overflow-y: auto; /* Allow vertical scrolling */
+            overflow-x: hidden; /* Hide horizontal overflow */
+            min-height: 100vh; /* Ensure body takes full viewport height for scrolling */
+            /* New background image styles - UPDATED TO RELATIVE PATH */
+            background-image: url('1.webp'); /* Your uploaded image, now referred by its name */
+            background-size: cover; /* Cover the entire body */
+            background-position: center; /* Center the image */
+            background-attachment: fixed; /* Keep image fixed when scrolling */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            position: relative; /* Needed for ::before absolute positioning */
         }
+        /* NEW: ::before pseudo-element for the gradient overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* This will now cover the entire scrollable height of the body */
+            background: linear-gradient(135deg, #ADD8E6 0%, #87CEEB 100%); /* Light sky blue gradient */
+            opacity: 0.7;
+            animation: pulse-light 8s infinite ease-in-out;
+            z-index: -1; /* Place it behind the content */
+        }
+
         .font-cairo {
             font-family: 'Cairo', sans-serif;
         }
         .bg-sky-gradient {
-            background: linear-gradient(135deg, #ADD8E6 0%, #87CEEB 100%); /* Light sky blue gradient */
+            /* This class is no longer applied to a div, but its properties are used in ::before */
         }
         .text-gold {
             color: #DAA520; /* Subtle gold accent */
@@ -45,7 +68,7 @@
         }
 
         .animated-background-light {
-            animation: pulse-light 8s infinite ease-in-out;
+            /* This class is no longer applied to a div, but its animation is used in ::before */
         }
 
         /* Saint Mina SVG - simple and lightweight */
@@ -102,15 +125,20 @@
         .modal-overlay.show .modal-content {
             transform: translateY(0);
         }
+
+        /* Overlay for readability on top of background image */
+        .content-overlay {
+            background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white overlay */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
-
-    <!-- Subtle animated background element -->
-    <div class="absolute inset-0 bg-sky-gradient opacity-70 animated-background-light"></div>
+<body class="flex flex-col items-center justify-start min-h-screen p-4">
+    <!-- Removed the div for the animated background gradient. It's now handled by body::before -->
 
     <!-- Main Invitation Page Content -->
-    <div id="main-page" class="relative z-10 bg-white p-6 md:p-8 rounded-xl shadow-lg text-center max-w-sm w-full border border-gray-200">
+    <div id="main-page" class="relative z-10 p-6 md:p-8 text-center max-w-sm w-full border border-gray-200 my-8 content-overlay">
         <!-- Saint Mina Icon (simple SVG) -->
         <div class="flex justify-center mb-4">
             <svg class="saint-mina-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -199,13 +227,20 @@
         <button id="share-button" class="mt-4 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">
             شارك الإعلان مع أصحابك
         </button>
+
+        <!-- Removed View Summary Button from main page -->
     </div>
 
     <!-- Vote Page Content (Initially Hidden) -->
-    <div id="vote-page" class="relative z-10 bg-white p-6 md:p-8 rounded-xl shadow-lg text-center max-w-sm w-full border border-gray-200 hidden">
+    <div id="vote-page" class="relative z-10 p-6 md:p-8 text-center max-w-sm w-full border border-gray-200 hidden my-8 content-overlay">
         <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
             هتيجي ليلة الصلاة؟
         </h2>
+        <!-- Optional Name Input -->
+        <div class="mb-6">
+            <label for="voter-name" class="block text-gray-700 text-lg font-bold mb-2">اسمك (اختياري):</label>
+            <input type="text" id="voter-name" placeholder="...." class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-sky-500 text-gray-800 text-center">
+        </div>
         <div class="flex flex-col space-y-4">
             <!-- Reordered buttons -->
             <button data-vote="coming" class="vote-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
@@ -218,6 +253,23 @@
                 مش جي
             </button>
         </div>
+    </div>
+
+    <!-- Vote Summary Page Content - NEWLY ADDED AND HIDDEN BY DEFAULT -->
+    <div id="summary-page" class="relative z-10 p-6 md:p-8 text-center max-w-sm w-full border border-gray-200 hidden my-8 content-overlay">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
+            إحصائيات التصويت
+        </h2>
+        <div id="actual-vote-summary-display" class="bg-blue-50 text-blue-800 p-4 rounded-lg text-lg text-center shadow-inner">
+            <p class="font-bold mb-2">إجمالي التصويتات:</p>
+            <p>جي أكيد: <span id="summary-definitely-coming" class="font-bold">0</span></p>
+            <p>جي: <span id="summary-coming" class="font-bold">0</span></p>
+            <p>مش جي: <span id="summary-not-coming" class="font-bold">0</span></p>
+            <p class="mt-2 text-sm text-gray-600">هذه الإحصائيات تتحدث بشكل تلقائي.</p>
+        </div>
+        <button id="back-to-main-button" class="mt-8 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">
+            العودة للصفحة الرئيسية
+        </button>
     </div>
 
     <!-- Custom Modal for Messages -->
@@ -234,10 +286,20 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase variables (provided by Canvas environment)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // Firebase Configuration - NOW HARDCODED WITH YOUR PROJECT'S CONFIG
+        const firebaseConfig = {
+          apiKey: "AIzaSyAMHEeVIzyIV9zWXhg99YnP9Zl3EVDD5zI",
+          authDomain: "lela-el-sala.firebaseapp.com",
+          projectId: "lela-el-sala",
+          storageBucket: "lela-el-sala.firebasestorage.app",
+          messagingSenderId: "21108424871",
+          appId: "1:21108424871:web:07dd2d12e2285fff675b82",
+          measurementId: "G-WHP3ZSV4CJ"
+        };
+
+        // Use projectId from firebaseConfig as appId for consistency
+        const appId = firebaseConfig.projectId; // This now uses your actual projectId
+        const initialAuthToken = null; // This is set to null as it's not used outside Canvas environment
 
         let app;
         let db;
@@ -248,7 +310,7 @@
         // Initialize Firebase and Authenticate
         async function initializeFirebase() {
             try {
-                if (Object.keys(firebaseConfig).length > 0) {
+                if (firebaseConfig.apiKey && firebaseConfig.projectId) {
                     app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
@@ -262,44 +324,44 @@
                         } else {
                             console.log("No user signed in. Attempting anonymous sign-in.");
                             try {
-                                if (initialAuthToken) {
-                                    await signInWithCustomToken(auth, initialAuthToken);
-                                } else {
-                                    await signInAnonymously(auth);
-                                }
+                                await signInAnonymously(auth);
                             } catch (error) {
                                 console.error("Firebase Auth Error:", error);
+                                showCustomModal("حدث خطأ في المصادقة. تأكد من إعداد Firebase Authentication.");
                             }
                         }
                     });
                 } else {
-                    console.warn("Firebase config not found. Firestore functionality will be limited.");
-                    isAuthReady = true; // Mark as ready even without Firebase for basic functionality
+                    console.warn("Firebase config is incomplete. Firestore functionality will not work.");
+                    showCustomModal("خطأ: إعدادات Firebase غير كاملة. يرجى مراجعة الكود.");
+                    isAuthReady = false;
                 }
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
-                isAuthReady = true; // Mark as ready even if init fails
+                showCustomModal("حدث خطأ أثناء تهيئة Firebase. يرجى مراجعة الكونسول.");
+                isAuthReady = false;
             }
         }
 
         // Firestore functions
-        async function saveRsvpStatus(status) {
+        async function saveRsvpStatus(status, name) { // Added name parameter
             if (!isAuthReady || !userId || !db) {
                 console.error("Firebase not ready or user not authenticated to save RSVP.");
-                showCustomModal("حدث خطأ: لا يمكن حفظ التصويت حالياً. حاول مرة أخرى.");
-                return;
+                showCustomModal("حدث خطأ: لا يمكن حفظ التصويت حالياً. تأكد من اتصالك بالإنترنت وإعدادات Firebase.");
+                return false;
             }
             try {
                 const rsvpDocRef = doc(db, `artifacts/${appId}/users/${userId}/prayer_night_rsvp`, 'my_rsvp');
                 await setDoc(rsvpDocRef, {
                     status: status,
+                    name: name, // Save the name
                     timestamp: new Date().toISOString()
                 });
-                console.log("RSVP status saved:", status);
+                console.log("RSVP status saved:", status, "Name:", name);
                 return true;
             } catch (e) {
                 console.error("Error saving RSVP status:", e);
-                showCustomModal("حدث خطأ أثناء حفظ التصويت.");
+                showCustomModal("حدث خطأ أثناء حفظ التصويت. تأكد من قواعد أمان Firestore.");
                 return false;
             }
         }
@@ -312,25 +374,64 @@
             try {
                 const rsvpDocRef = doc(db, `artifacts/${appId}/users/${userId}/prayer_night_rsvp`, 'my_rsvp');
                 const docSnap = await getDoc(rsvpDocRef);
+                const rsvpStatusDiv = document.getElementById('rsvp-status');
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    console.log("RSVP status loaded:", data.status);
+                    console.log("RSVP status loaded:", data.status, "Name:", data.name);
                     if (data.status === 'coming' || data.status === 'definitely_coming') {
-                        document.getElementById('rsvp-status').classList.remove('hidden');
+                        const displayName = data.name ? `يا ${data.name}` : '';
+                        rsvpStatusDiv.innerHTML = `أنت جاي ${displayName}! 🎉`; // Update message with name
+                        rsvpStatusDiv.classList.remove('hidden');
                     } else {
-                        document.getElementById('rsvp-status').classList.add('hidden');
+                        rsvpStatusDiv.classList.add('hidden');
                     }
                     return data.status;
                 } else {
                     console.log("No RSVP status found for this user.");
-                    document.getElementById('rsvp-status').classList.add('hidden');
+                    rsvpStatusDiv.classList.add('hidden');
                     return null;
                 }
             } catch (e) {
                 console.error("Error loading RSVP status:", e);
+                showCustomModal("حدث خطأ أثناء تحميل حالة التصويت. تأكد من قواعد أمان Firestore.");
                 return null;
             }
         }
+
+        // Function to load and display vote summary
+        async function loadVoteSummary() {
+            if (!db) {
+                console.warn("Firestore not initialized for vote summary.");
+                return;
+            }
+            try {
+                const summaryDocRef = doc(db, `artifacts/${appId}/public`, 'vote_summary');
+                const docSnap = await getDoc(summaryDocRef);
+
+                const summaryDefinitelyComingSpan = document.getElementById('summary-definitely-coming');
+                const summaryComingSpan = document.getElementById('summary-coming');
+                const summaryNotComingSpan = document.getElementById('summary-not-coming');
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("Vote Summary:", data);
+
+                    if (summaryDefinitelyComingSpan) summaryDefinitelyComingSpan.textContent = (data.total_coming_for_sure || 0).toString();
+                    if (summaryComingSpan) summaryComingSpan.textContent = (data.total_coming || 0).toString();
+                    if (summaryNotComingSpan) summaryNotComingSpan.textContent = (data.total_not_coming || 0).toString();
+
+                } else {
+                    console.log("No vote summary found yet. It will appear after the first vote is processed by Cloud Function.");
+                    if (summaryDefinitelyComingSpan) summaryDefinitelyComingSpan.textContent = '0';
+                    if (summaryComingSpan) summaryComingSpan.textContent = '0';
+                    if (summaryNotComingSpan) summaryNotComingSpan.textContent = '0';
+                }
+            } catch (e) {
+                console.error("Error loading vote summary:", e);
+                showCustomModal("حدث خطأ أثناء تحميل إحصائيات التصويت. تأكد من قواعد أمان Firestore.");
+            }
+        }
+
 
         // UI Element References
         const targetDate = new Date('2025-07-18T18:30:00+03:00').getTime(); // 6:30 PM EEST
@@ -342,9 +443,13 @@
         const messageSection = document.getElementById('message-section');
         const mainPage = document.getElementById('main-page');
         const votePage = document.getElementById('vote-page');
+        const summaryPage = document.getElementById('summary-page');
         const rsvpButton = document.getElementById('rsvp-button');
         const shareButton = document.getElementById('share-button');
+        const viewSummaryButton = document.getElementById('view-summary-button');
+        const backToMainButton = document.getElementById('back-to-main-button');
         const voteButtons = document.querySelectorAll('.vote-button');
+        const voterNameInput = document.getElementById('voter-name'); // Reference to the new name input
         const customModal = document.getElementById('custom-modal');
         const modalMessage = document.getElementById('modal-message');
         const modalCloseButton = document.getElementById('modal-close-button');
@@ -390,34 +495,59 @@
         function showPage(pageId) {
             mainPage.classList.add('hidden');
             votePage.classList.add('hidden');
+            summaryPage.classList.add('hidden');
             document.getElementById(pageId).classList.remove('hidden');
         }
 
         // Event Listeners
         rsvpButton.addEventListener('click', () => {
             showPage('vote-page');
+            // Clear name input when navigating to vote page
+            if (voterNameInput) voterNameInput.value = '';
         });
+
+        // The viewSummaryButton is now removed from HTML, so this listener is effectively unused
+        // but kept in JS for potential future use or if the button is re-added programmatically.
+        if (viewSummaryButton) {
+            viewSummaryButton.addEventListener('click', () => {
+                showPage('summary-page');
+                loadVoteSummary(); // Load summary data when navigating to summary page
+            });
+        }
+
+        if (backToMainButton) {
+            backToMainButton.addEventListener('click', () => {
+                showPage('main-page');
+            });
+        }
 
         voteButtons.forEach(button => {
             button.addEventListener('click', async (event) => {
                 const vote = event.target.dataset.vote;
-                const saved = await saveRsvpStatus(vote);
+                let voterName = voterNameInput ? voterNameInput.value.trim() : '';
+
+                // Generate name if not provided
+                if (!voterName) {
+                    voterName = `مجهول ${Math.floor(Math.random() * 10000)}`; // Generates "مجهول 12345"
+                }
+
+                const saved = await saveRsvpStatus(vote, voterName); // Pass name to save function
                 if (saved) {
                     if (vote === 'coming' || vote === 'definitely_coming') {
-                        showCustomModal("مستنينك في الصلاة يا كبير"); // Updated message
+                        showCustomModal("مستنينك في الصلاة يا كبير");
                         setTimeout(() => {
                             hideCustomModal();
                             showPage('main-page');
                             loadRsvpStatus(); // Refresh status on main page
-                        }, 2000); // Show message for 2 seconds
+                        }, 2000);
                     } else {
-                        // For 'not_coming', no message is displayed to the user
-                        // <!-- k3ro_OS -->
+                        showCustomModal("ها نصليلك معانا يا ملك/ة"); // New wholesome message
+                        // <!-- k3ro_OS --> This comment is for your reference in the code
                         setTimeout(() => {
                             hideCustomModal();
                             showPage('main-page');
                             loadRsvpStatus(); // Refresh status on main page
-                        }, 500); // Shorter delay for no message
+                        }, 2000);
                     }
                 }
             });
@@ -447,7 +577,15 @@
         });
 
         // Initialize Firebase and load RSVP status on page load
-        initializeFirebase();
+        initializeFirebase().then(() => {
+            // Check URL hash to potentially show summary page on load
+            if (window.location.hash === '#summary') {
+                showPage('summary-page');
+                loadVoteSummary();
+            } else {
+                showPage('main-page'); // Ensure main page is shown by default
+            }
+        });
     </script>
 </body>
 </html>
